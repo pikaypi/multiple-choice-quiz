@@ -227,7 +227,43 @@ const handleScoreSubmit = (event) => {
     };
     localStorage.setItem('scores', JSON.stringify(scores));
     renderStart();
-    // renderHighScores();
+    renderHighScores();
 };
 
+const hideHighScores = () => {
+    document.getElementById('high-score-display').remove()
+};
+
+const renderHighScores = () => {
+    const scoreDisplayEl = document.createElement('div');
+    scoreDisplayEl.setAttribute('id', 'high-score-display');
+    scoreDisplayEl.classList.add('high-score');
+
+    const scoreDisplayMessageEl = document.createElement('h1');
+    scoreDisplayMessageEl.textContent = 'High Scores';
+    scoreDisplayEl.append(scoreDisplayMessageEl);
+
+    const exitBtn = document.createElement('div');
+    exitBtn.textContent = 'X';
+    exitBtn.classList.add('exit-btn', 'has-hover')
+    exitBtn.addEventListener('click', hideHighScores)
+    scoreDisplayEl.append(exitBtn);
+
+    const highScoresList = document.createElement('ul');
+    highScoresList.classList.add('scores-list');
+
+    const scores = JSON.parse(localStorage.scores);
+    scores.scoresList = scores.scoresList.sort(function(a, b) {return a-b});
+    for (let i=scores.scoresList.length-1; i>=0; i--) {
+        const newScore = document.createElement('li');
+        newScore.classList.add('score');
+        newScore.textContent = `${scores.scoresList[i]}: ${scores.initials[scores.scoresList[i]]}`;
+        highScoresList.append(newScore);
+    };
+    scoreDisplayEl.append(highScoresList);
+    document.body.append(scoreDisplayEl);
+};
+
+const highScoresBtn = document.getElementById('high-scores-btn');
+highScoresBtn.addEventListener('click', renderHighScores);
 renderStart();
