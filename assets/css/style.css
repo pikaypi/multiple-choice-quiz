@@ -15,6 +15,10 @@ main {
     width: 75%;
 }
 
+main ul {
+    list-style: none;
+}
+
 .container {
     padding: 1%;
     background-color: var(--medium);
