@@ -59,6 +59,36 @@ const renderStart = () => {
 
 };
 
+// A function to render the question based on the globally stored index
+const renderQuestion = () => {
+    // Clear the display of any leftover content
+    clearDisplay();
+
+    // Retrieve the question data
+    var message = questions[onQuestion].message;
+    var options = questions[onQuestion].options;
+
+    // Create and append the question to the display
+    var messageEl = document.createElement('h1');
+    messageEl.textContent = message;
+    displayEl.append(messageEl);
+
+    // Create a list and append the options
+    var listEl = document.createElement('ul');
+    listEl.setAttribute('id', 'options')
+    for (let i=0; i<options.length; i++) {
+        var newLi = document.createElement('li');
+        newLi.textContent = options[i][0];
+        newLi.classList.add('option', 'has-hover')
+        newLi.dataset.state = options[i][1];
+        newLi.addEventListener('click', handleAnswer)
+        listEl.append(newLi);
+    };
+
+    // Append the list to the display
+    displayEl.append(listEl)
+};
+
 // A function to start the timer and the questions
 const startGame = () => {
     // Set the timer and render it to the header
