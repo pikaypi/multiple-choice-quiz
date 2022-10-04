@@ -170,7 +170,64 @@ const handleAnswer = (event) => {
 const gameOver = () => {
     timerEl.textContent = '';
     gameScore = gameScore * timeLeft;
-    // renderScoreForm();
+    renderScoreForm();
+};
+
+const renderScoreForm = () => {
+    clearDisplay();
+
+    var messageEl = document.createElement('h1');
+    messageEl.textContent = 'Enter your initials';
+    displayEl.append(messageEl);
+
+    var scoreEl = document.createElement('h2');
+    scoreEl.textContent = gameScore;
+    displayEl.append(scoreEl);
+
+    var scoreForm = document.createElement('form');
+
+    var initialsInput = document.createElement('input');
+    initialsInput.setAttribute('type', 'text');
+    initialsInput.setAttribute('name', 'initials');
+    initialsInput.setAttribute('id', 'initials');
+    scoreForm.append(initialsInput);
+
+    var submitBtn = document.createElement('input');
+    submitBtn.setAttribute('type', 'submit');
+    submitBtn.setAttribute('value', 'Submit');
+    scoreForm.append(submitBtn);
+    
+    scoreForm.addEventListener('submit', handleScoreSubmit);
+    displayEl.append(scoreForm)
+};
+
+const handleScoreSubmit = (event) => {
+    event.preventDefault();
+    const initialsEl = document.getElementById('initials');
+    var scores;
+    if (!localStorage.scores) {
+        scores = {
+            scoresList: [gameScore],
+            initials: {}
+        };
+        scores.initials[gameScore] = initialsEl.value;
+    } else {
+        var scores = JSON.parse(localStorage.scores);
+        var scoresList = scores.scoresList.sort(function(a, b) {return a-b});
+        if (scoresList.length < 5) {
+            scoresList.push(gameScore);
+            scores.initials[gameScore] = initialsEl.value;
+        } else {
+            if (gameScore > scoresList[0]) {
+                delete scores.initials[scoresList[0]]
+                scores.scoresList[0] = gameScore;
+                scores.initials[gameScore] = initialsEl.value;
+            }
+        }
+    };
+    localStorage.setItem('scores', JSON.stringify(scores));
+    renderStart();
+    // renderHighScores();
 };
 
 renderStart();
