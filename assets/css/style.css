@@ -53,6 +53,15 @@ main ul {
     border-radius: 0.4rem;
 }
 
+.continue {
+    padding: 0.75%;
+    width: 50%;
+    margin: 1% auto;
+    color: var(--dark);
+    background-color: var(--light);
+    border-radius: 0.4rem;
+}
+
 .has-hover {
     cursor: pointer;
 }
