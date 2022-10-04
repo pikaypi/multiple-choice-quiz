@@ -29,9 +29,36 @@ const renderStart = () => {
 
 };
 
-// A placeholder to start the game
+// A function to start the timer and the questions
 const startGame = () => {
-    console.log('Game started');
+    // Set the timer and render it to the header
+    timeLeft = 30;
+    timerEl.textContent = timeLeft + ' s';
+
+    // Reset the score and question index to 0
+    gameScore = 0;
+    onQuestion = 0;
+
+    // Start the timer
+    var timeInterval = setInterval(() => {
+        // End the game when the timer runs out or when the last question is answered
+        if (timeLeft === 1 || onQuestion === 3) {
+            clearInterval(timeInterval);
+            gameOver();
+        // If the game timer gets below 10, the display changes to red
+        } else if (timeLeft <= 10) {
+            timerEl.setAttribute('style', 'color:red;');
+            timeLeft--;
+            timerEl.textContent = timeLeft + ' s'
+        // Increment the timer and update the page
+        } else {
+            timeLeft--;
+            timerEl.textContent = timeLeft + ' s'
+        }
+    }, 1000);
+
+    // Once the timer has started, render the first question to the display
+    renderQuestion(questions[onQuestion].message, questions[onQuestion].options)
 };
 
 renderStart();
