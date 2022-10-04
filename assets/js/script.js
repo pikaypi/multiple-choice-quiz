@@ -166,4 +166,11 @@ const handleAnswer = (event) => {
     listEl.append(continueEl);
 };
 
+// A function to handle the exit from the game
+const gameOver = () => {
+    timerEl.textContent = '';
+    gameScore = gameScore * timeLeft;
+    // renderScoreForm();
+};
+
 renderStart();
