@@ -105,7 +105,7 @@ const startGame = () => {
         // End the game when the timer runs out or when the last question is answered
         if (timeLeft === 1 || onQuestion === 3) {
             clearInterval(timeInterval);
-            // gameOver();
+            gameOver();
         // If the game timer gets below 10, the display changes to red
         } else if (timeLeft <= 10) {
             timerEl.setAttribute('style', 'color:red;');
