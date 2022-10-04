@@ -3,3 +3,40 @@
     --medium: #3b82f6;
     --dark: #1e3a8a;
 }
+
+body {
+    padding: 0.25%;
+    background-color: var(--light);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    margin: 3% auto 0 auto;
+    width: 75%;
+}
+
+.container {
+    padding: 1%;
+    background-color: var(--medium);
+    color: var(--light);
+    border-radius: 0.7rem;
+    text-align: center;
+    position: relative;
+}
+
+.high-scores-btn {
+    position: absolute;
+    top: 32%;
+    left: 2%;
+    width: auto;
+    border-radius: 0.4rem;
+    padding: 0.75%;
+    background-color: var(--dark);
+}
+
+.timer {
+    position: absolute;
+    top: 36%;
+    right: 2%;
+    margin: 0%;
+}
