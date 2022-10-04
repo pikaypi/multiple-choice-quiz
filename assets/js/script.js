@@ -1,5 +1,6 @@
 const displayEl = document.getElementById('display');
 const timerEl = document.getElementById('timer');
+var timeLeft, gameScore, onQuestion;
 
 // A variable to hold the content of the quiz
 const questions = [
