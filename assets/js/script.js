@@ -173,9 +173,12 @@ const gameOver = () => {
     renderScoreForm();
 };
 
+// A functions to render the score submission form
 const renderScoreForm = () => {
+    // Clear the contents of the game
     clearDisplay();
 
+    // Create and append tags for the title and the score from the previous game
     var messageEl = document.createElement('h1');
     messageEl.textContent = 'Enter your initials';
     displayEl.append(messageEl);
@@ -184,6 +187,7 @@ const renderScoreForm = () => {
     scoreEl.textContent = gameScore;
     displayEl.append(scoreEl);
 
+    // Create the form element with an input for name and a submit button
     var scoreForm = document.createElement('form');
 
     var initialsInput = document.createElement('input');
@@ -196,27 +200,39 @@ const renderScoreForm = () => {
     submitBtn.setAttribute('type', 'submit');
     submitBtn.setAttribute('value', 'Submit');
     scoreForm.append(submitBtn);
-    
     scoreForm.addEventListener('submit', handleScoreSubmit);
+    
+    // Append the form to the display
     displayEl.append(scoreForm)
 };
 
+// A function to handle the score form submission
 const handleScoreSubmit = (event) => {
+    // Prevent the page from reloading
     event.preventDefault();
+
+    // Set initial variables
     const initialsEl = document.getElementById('initials');
     var scores;
+
+    // If no scores are stored, set up the object to store them
     if (!localStorage.scores) {
         scores = {
             scoresList: [gameScore],
             initials: {}
         };
         scores.initials[gameScore] = initialsEl.value;
+    // If there are saved scores, take them from local storage and sort them
     } else {
         var scores = JSON.parse(localStorage.scores);
         var scoresList = scores.scoresList.sort(function(a, b) {return a-b});
+
+        // If there are less than 5 scores, append the new one
         if (scoresList.length < 5) {
             scoresList.push(gameScore);
             scores.initials[gameScore] = initialsEl.value;
+        
+        // Check if the score makes it on the board and append it if it does
         } else {
             if (gameScore > scoresList[0]) {
                 delete scores.initials[scoresList[0]]
@@ -225,16 +241,26 @@ const handleScoreSubmit = (event) => {
             }
         }
     };
+
+    // Save the scores, reset the game, and render the high scores
     localStorage.setItem('scores', JSON.stringify(scores));
     renderStart();
     renderHighScores();
 };
 
+// A function to clear the high scores from the page
 const hideHighScores = () => {
-    document.getElementById('high-score-display').remove()
+    while (document.getElementById('high-score-display')) {
+        document.getElementById('high-score-display').remove()
+    };
 };
 
+// A function to render the high scores to the page
 const renderHighScores = () => {
+    // If the scores are already showing, clear them
+    hideHighScores();
+
+    // Create the display element and add the title
     const scoreDisplayEl = document.createElement('div');
     scoreDisplayEl.setAttribute('id', 'high-score-display');
     scoreDisplayEl.classList.add('high-score');
@@ -243,15 +269,18 @@ const renderHighScores = () => {
     scoreDisplayMessageEl.textContent = 'High Scores';
     scoreDisplayEl.append(scoreDisplayMessageEl);
 
+    // Create and append the exit button
     const exitBtn = document.createElement('div');
     exitBtn.textContent = 'X';
     exitBtn.classList.add('exit-btn', 'has-hover')
     exitBtn.addEventListener('click', hideHighScores)
     scoreDisplayEl.append(exitBtn);
 
+    // Create the list to hold the high scores
     const highScoresList = document.createElement('ul');
     highScoresList.classList.add('scores-list');
 
+    // Take the high scores from local storage and render them to the list
     const scores = JSON.parse(localStorage.scores);
     scores.scoresList = scores.scoresList.sort(function(a, b) {return a-b});
     for (let i=scores.scoresList.length-1; i>=0; i--) {
@@ -260,10 +289,13 @@ const renderHighScores = () => {
         newScore.textContent = `${scores.scoresList[i]}: ${scores.initials[scores.scoresList[i]]}`;
         highScoresList.append(newScore);
     };
+
+    // Render the list to the diplay and the display to the page
     scoreDisplayEl.append(highScoresList);
     document.body.append(scoreDisplayEl);
 };
 
+// Activate the high scores button and reset the game when the page loads
 const highScoresBtn = document.getElementById('high-scores-btn');
 highScoresBtn.addEventListener('click', renderHighScores);
 renderStart();
