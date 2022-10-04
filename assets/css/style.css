@@ -40,3 +40,7 @@ main {
     right: 2%;
     margin: 0%;
 }
+
+.has-hover {
+    cursor: pointer;
+}
