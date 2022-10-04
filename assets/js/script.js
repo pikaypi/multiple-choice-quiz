@@ -121,4 +121,48 @@ const startGame = () => {
     renderQuestion(questions[onQuestion].message, questions[onQuestion].options)
 };
 
+// A function that handles the user's answer
+const handleAnswer = (event) => {
+    // Store the element in a variable
+    var choice = event.target;
+    
+    // If the answer is correct, turn the option green and increment the score
+    if (choice.dataset.state === 'correct') {
+        choice.setAttribute('style', 'background-color:green');
+        gameScore++;
+    // If the answer is incorrect, turn the option red and decrement the timer
+    } else {
+        choice.setAttribute('style', 'background-color:red');
+        timeLeft-=10;
+    }
+
+    // Disable the options to prevent the user from choosing two
+    var options = document.querySelectorAll('.option');
+    for (let i=0; i<options.length; i++) {
+        options[i].removeEventListener('click', handleAnswer);
+    };
+
+    // Increment the question index
+    onQuestion++;
+
+    // Create the continue button
+    var continueEl = document.createElement('li');
+    continueEl.classList.add('continue', 'has-hover');
+
+    // If all the questions have been answered, finish the quiz
+    if (onQuestion === 3) {
+        continueEl.textContent = 'Finish Quiz';
+        continueEl.addEventListener('click', gameOver);
+    
+    // If there are questions left, render the next question
+    } else {
+        continueEl.textContent = 'Next Question';
+        continueEl.addEventListener('click', renderQuestion);
+    }
+
+    // Append the continue button to the options
+    var listEl = document.getElementById('options')
+    listEl.append(continueEl);
+};
+
 renderStart();
